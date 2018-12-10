@@ -12,7 +12,11 @@ public class Line extends JPanel{
 	private static final long serialVersionUID = 1L;
 	public Router router1 = null;
 	public Router router2 = null;
+	private Point startPoint = new Point(0,0);
+	private Point endPoint = new Point(0,0);
 	public DrawPad drawPad;
+	private int delta_x;
+	private int delta_y;
 	
 	public Line(Router router1, Router router2, DrawPad drawPad) {
 		this.router1 = router1;
@@ -33,34 +37,88 @@ public class Line extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		arrange();
-		int delta_x = router2.position.x -router1.position.x;
-		int delta_y = router2.position.y-router1.position.y;
-		setBounds(router1.position.x + 25, router1.position.y + 25, delta_x, delta_y);
-		System.out.println("delta x : " + String.valueOf(delta_x));
-		System.out.println("delta y : " + String.valueOf(delta_y));
-		((Graphics2D) g).setStroke(new BasicStroke(10));
-		g.drawLine(0, 0,delta_x, delta_y);
+		setPosition();
+		((Graphics2D) g).setStroke(new BasicStroke(5));
+		g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 	}
 	
 	public void setPosition() {
-
-		int delta_x = router2.position.x -router1.position.x;
-		int delta_y = router2.position.y-router1.position.y;
-		setBounds(router1.position.x, router1.position.y, delta_x, delta_y);
+		delta_x = router2.position.x - router1.position.x;
+		delta_y = router2.position.y - router1.position.y;
+		
+		if(delta_x < 0) {
+			//the first point is in the upper or lower right corner
+			if(delta_y < 0 ) {
+				//the first point is in the lower right corner
+				delta_y = delta_y*-1;
+				delta_x = delta_x*-1;
+				startPoint.set(0, 0);
+				endPoint.set(delta_x, delta_y);
+				setBounds(router2.position.x+25, router2.position.y+25, delta_x+10, delta_y+10);
+				System.out.println("-------------------lower right-----------------");
+			}else {
+				//the first point is in the upper right corner
+				delta_x = delta_x*-1;
+				startPoint.set(0, delta_y);
+				endPoint.set(delta_x, 0);
+				setBounds(router2.position.x+25, router1.position.y+25, delta_x+10, delta_y+10);
+				System.out.println("-------------------upper right-----------------");
+				System.out.println(router2.position.x);
+				System.out.println(router1.position.y);
+			}
+		}else if(delta_x >0){
+			//the first point is in the upper or lower left corner
+			if(delta_y < 0 ) {
+				System.out.println("-------------------lower left-----------------");
+				//the first point is in the lower left corner
+				delta_y = delta_y*-1;
+				startPoint.set(0, delta_y);
+				endPoint.set(delta_x, 0);
+				setBounds(router1.position.x+25, router2.position.y+25, delta_x+10, delta_y+10);
+			}else {
+				//the first point is in the upper left corner
+				System.out.println("-------------------upper left-----------------");
+				startPoint.set(0, 0);
+				endPoint.set(delta_x, delta_y);
+				setBounds(router1.position.x+25, router1.position.y+25, delta_x+10, delta_y+10);
+			}
+		}
+		if(delta_x == 0) {
+			delta_x = 20;
+			System.out.println("-------------------zero x-----------------");
+			startPoint.set(10, 0);
+			endPoint.set(10, delta_y);
+			if (delta_y < 0) {
+				//first point is in the lower middle
+				setBounds(router2.position.x+15, router2.position.y+25, delta_x+10, delta_y+10);
+			}else {
+				setBounds(router1.position.x+15, router1.position.y+25, delta_x+10, delta_y+10);
+				
+			}
+		}
+		if(delta_y == 0) {
+			delta_y = 20;
+			System.out.println("-------------------zero y-----------------");
+			startPoint.set(0, 10);
+			endPoint.set(delta_x, 10);
+			if (delta_x < 0) {
+				//first point is in the lower middle
+				setBounds(router2.position.x+25, router2.position.y+15, delta_x+10, delta_y+10);
+			}else {
+				setBounds(router1.position.x+25, router1.position.y+15, delta_x+10, delta_y+10);
+				
+			}
+		}
+		
 	}
+	
 	private void arrange() {
 		if(router1.position.isGreaterThan(router2.position)) {
 			Router r = router1;
 			router1 = router2;
 			router2 = r;
+			setPosition();
 		}
 	}
 	
-	public void draw(Graphics g) {
-		Point ps = new Point(router1.position);
-		Point pe = new Point(router2.position);
-		((Graphics2D) g).setStroke(new BasicStroke(3));
-		g.drawLine(ps.x + 25, ps.y + 25, pe.x + 25, pe.y + 25);
-	}
 }	

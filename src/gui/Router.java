@@ -97,7 +97,6 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	public void repaintConnection(Line line) {
 
 		line.repaint();
-		//line.draw(drawPad.getGraphics());
 		//line.router1.repaint();
 		//line.router2.repaint();
 	}
@@ -114,6 +113,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	    			drawPad.currentLine = line;
     			}else {
     				line.router2 = this;
+        			line.setPosition();
     				repaintConnection(line);
     				addConnection(line);
         			line.router1.addConnection(line);
@@ -155,13 +155,17 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	
 	@Override
 	public void mouseDragged(MouseEvent event) {
-    	Point position = new Point(drawPad.getMousePosition().x, drawPad.getMousePosition().y);
-    	Point rp = new Point(position);
-    	rp.add(-offset.x, -offset.y);
-    	setPosition(rp);
-    	routingTable.setVisible(false);
-		for(int i = 0 ; i <connectionNum ;i++) {
-			repaintConnection(connection[i]);
+		try {
+	    	Point position = new Point(drawPad.getMousePosition().x, drawPad.getMousePosition().y);
+	    	Point rp = new Point(position);
+	    	rp.add(-offset.x, -offset.y);
+	    	setPosition(rp);
+	    	routingTable.setVisible(false);
+			for(int i = 0 ; i <connectionNum ;i++) {
+				repaintConnection(connection[i]);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 
@@ -170,8 +174,8 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		int x = e.getX();
 		int y = e.getY();
 		if(routerImageRectangle.isInRectangleArea(new Point(e.getX(),e.getY()))) {
-	    	System.out.println("---------current router index--------");
-	    	System.out.println(drawPad.currentRouterIndex);
+	    	//System.out.println("---------current router index--------");
+	    	//System.out.println(drawPad.currentRouterIndex);
 			routingTable.setVisible(true);
 		}else {
 			routingTable.setVisible(false);

@@ -1,4 +1,5 @@
 package gui;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -17,25 +18,27 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	 */
 	private static final long serialVersionUID = 1L;
 	private Point offset = new Point(0,0);
-	public RoutingTable routingTable = null;
+	public RoutingTable routingTable;
 	private int routerImageWidth = 50;
 	private int routerImageHeight = 50;
 	public Point position = new Point(0,0);
 	public Point cursorPosition = new Point(0,0); 
 	public int index;
-	public JLabel label = null;
-	public JLabel list = null;
-	private DrawPad drawPad = null;
-	private BufferedImage router_image = null;
-	public Rectangle routerImageRectangle = null;
+	public JLabel label;
+	private JLabel positionLabel;
+	private DrawPad drawPad;
+	private BufferedImage router_image;
+	public Rectangle routerImageRectangle;
+	public int counter = 0;
 	
 	public Router(Point position, int index, DrawPad drawPad) {
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		this.setLayout(null);
-		
+		this.setOpaque(false);
+
 		try {
-			router_image = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/router_symbol.png"));
+			router_image = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/resources/router_symbol.png"));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -43,16 +46,21 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		this.index = index;
 
 		label = new JLabel();
-		//label.setText("router" + String.valueOf(index));
-		label.setText("(" + String.valueOf(position.x) + ", " + String.valueOf(position.y) + ")");
-		list = new JLabel("router" + String.valueOf(index) + " connected to" + "-");
+		label.setText("router" + String.valueOf(index));
+		positionLabel = new JLabel();
+		positionLabel.setText("(" + String.valueOf(position.x) + ", " + String.valueOf(position.y) + ")");
+		routingTable = new RoutingTable(this);
+		add(routingTable);
 		this.drawPad = drawPad;
 		add(label);
-		add(list);
+		add(positionLabel);
+		positionLabel.setOpaque(true);
+		positionLabel.setBackground(Color.YELLOW);
 		
 		this.setBounds(position.x,position.y,50,70);
 		label.setBounds(0, 60, 100, 10);
-		list.setBounds(0, 80, 100, 10);
+		positionLabel.setBounds(0, 0, 100, 10);
+		positionLabel.setVisible(false);
 		
 		this.drawPad.add(this);
 		routerImageRectangle = new Rectangle(new Point(0,0),new Point(50,50));
@@ -68,14 +76,12 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	public void draw(Graphics g) {
 		g.drawImage (router_image.getScaledInstance(routerImageWidth, routerImageHeight, Image.SCALE_SMOOTH), position.x, position.y, this);
 		label.setBounds(position.x, position.y + 10, 100, 100);
-		list.setBounds(position.x + 50, position.y + 60, 100, 100);
 	}
 	
 	public void setPosition(Point p) {
 		position.x = p.x;
 		position.y = p.y;
 		this.setBounds(position.x,position.y,50,70);
-		list.setBounds(0, 60, 100, 10);
 		repaint();
 	}
 
@@ -99,18 +105,33 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	public void mouseReleased(MouseEvent e) {
 	}
 
+	public void startTimer() {
+		
+	}
+	
+	public void stopTimer() {
+		
+	}
+	
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		list.setVisible(true);
+		startTimer();
+		if (counter >= 1) {
+			routingTable.setBounds(e.getX(), e.getY(), routingTable.getWidth(), routingTable.getHeight());
+			routingTable.setVisible(true);
+			stopTimer();
+		}
 		setBounds(position.x, position.y, 150,500);
 		drawPad.currentRouterIndex = index;
+		positionLabel.setVisible(true);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		list.setVisible(false);
+		routingTable.setVisible(true);
 		setBounds(position.x, position.y, 50,70);
 		drawPad.currentRouterIndex = -1;
+		positionLabel.setVisible(false);
 	}
 
 	@Override

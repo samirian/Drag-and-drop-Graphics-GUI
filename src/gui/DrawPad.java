@@ -1,10 +1,13 @@
 package gui;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class DrawPad extends Container implements MouseMotionListener, MouseListener {
+import javax.swing.JPanel;
+
+public class DrawPad extends JPanel implements MouseMotionListener, MouseListener {
 	public Point position = null;
 	private int RouterIndexInList = 0;
 	public int currentRouterIndex = -1;
@@ -31,6 +34,7 @@ public class DrawPad extends Container implements MouseMotionListener, MouseList
 		super();
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		this.setBackground(Color.WHITE);
 	}
 
     public int getRouterIndexInList(Point position) {

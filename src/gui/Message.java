@@ -26,9 +26,9 @@ public class Message extends JPanel{
 		setBounds(position.x, position.y,50,50);
 		this.setLayout(null);
 		c.add(this);
-
+		this.setOpaque(false);
 		try {
-			message_image = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/message-symbol.jpg"));
+			message_image = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/resources/message-symbol.jpg"));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

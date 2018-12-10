@@ -16,6 +16,6 @@ public class Main extends JPanel{
 		mainWindow = new MainWindow();
 		jFrame.add(mainWindow);
 		jFrame.setExtendedState(jFrame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-		mainWindow.showOff();;
+		mainWindow.showOff();
 	}
 }

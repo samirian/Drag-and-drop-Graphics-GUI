@@ -103,7 +103,6 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     public void addRouter(Point position) {
     	if (numOfRouters < MAX) {
     		router[numOfRouters] = new Router(position, indexer, this);
-    		router[numOfRouters].setVisible(true);
     		indexer++;
     		numOfRouters++;
     	}
@@ -154,6 +153,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 				removeConnection(connectionIndexInList);
 			}
 		}
+		repaint();
 	}
 
 	@Override

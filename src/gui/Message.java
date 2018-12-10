@@ -1,5 +1,4 @@
 package gui;
-import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -78,7 +77,7 @@ public class Message extends JPanel{
     		setPosition(new Point((int)x,(int)y));
     		x = x + 1;
     		try {
-				TimeUnit.MILLISECONDS.sleep(50);
+				TimeUnit.MILLISECONDS.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

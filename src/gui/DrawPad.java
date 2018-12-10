@@ -1,5 +1,9 @@
 package gui;
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -8,6 +12,7 @@ import javax.swing.JPanel;
 
 public class DrawPad extends JPanel implements MouseMotionListener, MouseListener {
 	public Point position = null;
+	public String mode = "none";
 	private int RouterIndexInList = 0;
 	public int currentRouterIndex = -1;
 	private static final int MAX = 100;
@@ -27,6 +32,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     private int routerImageWidth = 50;
     private int routerImageHeight = 50;
     private int numOfLines = 0;
+    public Line currentLine = null;
 	
 	public DrawPad() {
 		super();
@@ -57,7 +63,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     }
     
     public void addConnection(Point startPoint, Point endPoint) {
-		line[numOfLines] = new Line(router[getRouterIndexInList(startPoint)], router[getRouterIndexInList(endPoint)]);
+		//line[numOfLines] = new Line(router[getRouterIndexInList(startPoint)], router[getRouterIndexInList(endPoint)]);
 		numOfLines++;
     }
      
@@ -184,6 +190,19 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 		int x = e.getX();
 		int y = e.getY();
 		position = new Point(x, y);
+		Graphics2D g = (Graphics2D) getGraphics();
+		if(mode == "connect") {
+    		setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    		if(currentLine != null) {
+	    		if(currentLine.router1 != null && currentLine.router2 == null) {
+	    	        g.setStroke(new BasicStroke(6));
+	    	        repaint();
+	    	        g.drawLine(currentLine.router1.position.x + 25, currentLine.router1.position.y + 25, x, y);
+	    		}else if(currentLine.router1 != null && currentLine.router2 != null) {
+	    			currentLine = null;
+	    		}
+			}
+		}
 	}
 
 	@Override

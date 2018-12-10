@@ -1,3 +1,4 @@
+package gui;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 

@@ -1,3 +1,4 @@
+package gui;
 import java.awt.BasicStroke;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -13,7 +14,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class DrawSketch extends JPanel implements MouseMotionListener, MouseListener {
@@ -38,13 +38,11 @@ public class DrawSketch extends JPanel implements MouseMotionListener, MouseList
 	private Point endPoint = new Point(0, 0);
 	private char position_state = 's';
 	private Point tempPoint = new Point(0, 0);
-    private static Container cPane = null;
     private static JFrame jFrame = null;
     private int routerImageWidth = 50;
     private int routerImageHeight = 50;
     private int numOfLines = 0;
 	private BufferedImage delete_image = null;
-	JLabel l = new JLabel("3aaaaaaaaaa");
 
 	public static void main(String[] args) {
 		jFrame = new JFrame();
@@ -56,10 +54,22 @@ public class DrawSketch extends JPanel implements MouseMotionListener, MouseList
 			    	System.exit(0);
 			}
 		});
-		cPane = jFrame.getContentPane();
-		cPane.add(new DrawSketch());
+		//cPane = jFrame.getContentPane();
+		DrawPad p = new DrawPad();
+		p.setLayout(null);
+		//cPane.setLayout(null);
+		//cPane.add(new DrawSketch());
+		Router r = new Router(new Point(50,50),0,p);
+		//p.add(r);
+		Router r2 = new Router(new Point(200,200),1,p);
+		//p.add(r2);
+		//cPane.add(r2);
+		//cPane.add(r);
+		Message m = new Message(r,r2, p);
+		jFrame.add(p);
 		jFrame.setVisible(true);
 		jFrame.setExtendedState(jFrame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		m.move();
 	}
 
 	public DrawSketch() {
@@ -106,9 +116,9 @@ public class DrawSketch extends JPanel implements MouseMotionListener, MouseList
     }
     
     public void addRouter(Point position) {
-		rt.addRow(this);
+		//rt.addRow(this);
     	if (numOfRouters < MAX) {
-    		router[numOfRouters] = new Router(position, indexer, this);
+    		//router[numOfRouters] = new Router(position, indexer, this);
     		indexer++;
     		numOfRouters++;
     		repaint();

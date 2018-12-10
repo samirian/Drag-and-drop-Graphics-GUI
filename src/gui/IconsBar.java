@@ -1,3 +1,4 @@
+package gui;
 import javax.swing.JPanel;
 
 public class IconsBar extends JPanel{

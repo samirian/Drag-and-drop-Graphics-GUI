@@ -1,3 +1,4 @@
+package gui;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

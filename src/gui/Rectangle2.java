@@ -1,3 +1,4 @@
+package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,13 +13,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Rectangle extends JPanel{
+public class Rectangle2 extends JPanel{
         private static final long serialVersionUID = 1L;
 
         Image img;
         Timer timer;
         int count=0;
-        public Rectangle() {
+        public Rectangle2() {
 
             setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
             setPreferredSize(new Dimension(100,100));

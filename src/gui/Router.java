@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +30,6 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	private DrawPad drawPad;
 	private BufferedImage router_image;
 	public Rectangle routerImageRectangle;
-	public int counter = 0;
 	
 	public Router(Point position, int index, DrawPad drawPad) {
 		addMouseListener(this);
@@ -50,6 +50,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		positionLabel = new JLabel();
 		positionLabel.setText("(" + String.valueOf(position.x) + ", " + String.valueOf(position.y) + ")");
 		routingTable = new RoutingTable(this);
+		routingTable.setVisible(false);
 		add(routingTable);
 		this.drawPad = drawPad;
 		add(label);
@@ -92,6 +93,11 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
     		this.setBounds(position.x,position.y,100,100);
     	}
 		//label.setText("<html>This is<br>a multi-line string");
+    	else if(event.getButton() == 3) {
+    		//Right click
+    		System.out.println("--------------------right click-----------------");
+    		remove();
+    	}
 	}
 
 	@Override
@@ -104,23 +110,9 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
-
-	public void startTimer() {
-		
-	}
-	
-	public void stopTimer() {
-		
-	}
 	
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		startTimer();
-		if (counter >= 1) {
-			routingTable.setBounds(e.getX(), e.getY(), routingTable.getWidth(), routingTable.getHeight());
-			routingTable.setVisible(true);
-			stopTimer();
-		}
 		setBounds(position.x, position.y, 150,500);
 		drawPad.currentRouterIndex = index;
 		positionLabel.setVisible(true);
@@ -128,10 +120,10 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		routingTable.setVisible(true);
 		setBounds(position.x, position.y, 50,70);
 		drawPad.currentRouterIndex = -1;
 		positionLabel.setVisible(false);
+		routingTable.setVisible(false);
 	}
 
 	@Override
@@ -146,11 +138,26 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-    	cursorPosition.set(x, y);
+		if(routerImageRectangle.isInRectangleArea(new Point(e.getX(),e.getY()))) {
+	    	System.out.println("---------current router index--------");
+	    	System.out.println(drawPad.currentRouterIndex);
+			routingTable.setVisible(true);
+		}else {
+			routingTable.setVisible(false);
+		}
+		routingTable.setBounds(e.getX(), e.getY(), routingTable.getWidth(), routingTable.getHeight());
+		cursorPosition.set(x, y);
     	if (routerImageRectangle.isInRectangleArea(cursorPosition)) {
     		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     	}else {
     		setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     	}
+	}
+	
+	public void remove() {
+		drawPad.remove(this);
+		drawPad.Remove(index);
+		drawPad.repaint();
+		drawPad.currentRouterIndex = -1;
 	}
 }

@@ -1,6 +1,5 @@
 package gui;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -11,12 +10,11 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 	public Point position = null;
 	private int RouterIndexInList = 0;
 	public int currentRouterIndex = -1;
-	private int Max = 100;
-	private Router[] router = new Router[Max];
+	private static final int MAX = 100;
+	private Router[] router = new Router[MAX];
 	private int connectionIndexInList = -1;
 	private static final long serialVersionUID = 1L;
 	private Point offsetPoint = new Point(0, 0);
-	private static final int MAX = 100;
 	private int indexInList = 0;
 	private Line line[] = new Line[MAX];
 	private int indexer = 0;
@@ -49,6 +47,14 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     	}
     	return -1;
     }
+
+    public int getRouterIndexInList(int index) {
+    	for (int i = 0; i < numOfRouters; i++) {
+    		if(router[i].index == index)
+    			return i;
+    	}
+    	return -1;
+    }
     
     public void addConnection(Point startPoint, Point endPoint) {
 		line[numOfLines] = new Line(router[getRouterIndexInList(startPoint)], router[getRouterIndexInList(endPoint)]);
@@ -66,12 +72,12 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     	repaint();
     }
 
-    @Override
-    public void remove(int n) {
+    public void Remove(int index) {
+    	int n = getRouterIndexInList(index);
     	if (n < 0 || n >= numOfRouters) {
     		return;
     	}
-    	
+    	/*
     	//delete the connection
     	for (int i = 0 ; i < numOfLines ; i++) {
     		if (line[i].router1.index == router[n].index || line[i].router2.index == router[n].index) {
@@ -84,8 +90,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     	    	numOfLines--;
     		}
     	}
-    	
-    	router[n].label.setText("");
+    	*/
     	for (int i = n ; i < numOfRouters ;i++) {
     		router[i] = router[i+1];
     	}
@@ -95,10 +100,10 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     	repaint();
     }
 
-	
     public void addRouter(Point position) {
     	if (numOfRouters < MAX) {
     		router[numOfRouters] = new Router(position, indexer, this);
+    		router[numOfRouters].setVisible(true);
     		indexer++;
     		numOfRouters++;
     	}
@@ -111,6 +116,8 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 		Point position = new Point(x, y);
 		if (e.getButton() == 1) {
 			System.out.println("left click");
+			System.out.println("--------------router index-------------");
+			System.out.println(currentRouterIndex);
 			if (e.getClickCount() == 1) {
 				//adding new router
 				if (currentRouterIndex < 0) { 
@@ -150,30 +157,6 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void mouseDragged(MouseEvent event) {
 		int x = event.getX();
 		int y = event.getY();
@@ -200,11 +183,19 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-    	System.out.println("X : " + String.valueOf(x));
-    	System.out.println("Y : " + String.valueOf(y));
-    	System.out.println("-----------------");
-    	System.out.println(currentRouterIndex);
 		position = new Point(x, y);
 	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 
 }

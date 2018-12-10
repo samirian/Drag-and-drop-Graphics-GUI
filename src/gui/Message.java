@@ -74,9 +74,6 @@ public class Message extends JPanel{
     	double m = (y2-y1)/(x2-x1);
     	double c = y1-x1*m;
     	while(x < x2) {
-    		System.out.println("e7m");
-    		System.out.println(x);
-    		System.out.println(y);
     		y = m*x +c;
     		setPosition(new Point((int)x,(int)y));
     		x = x + 1;

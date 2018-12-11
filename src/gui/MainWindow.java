@@ -27,7 +27,6 @@ public class MainWindow extends JPanel{
 	private DrawPad drawPad;
 	Router r;
 	Router r2;
-	Line l;
 	
     public MainWindow(){
         super.setLayout(new BorderLayout());
@@ -35,8 +34,6 @@ public class MainWindow extends JPanel{
         setOpaque(false);
 		r = new Router(new gui.Point(50,50), 0, drawPad);
 		r2 = new Router(new gui.Point(200,200), 1, drawPad);
-		l = new Line(r,r2,drawPad);
-		l.repaint();
     }
 
     public void showOff() {

@@ -131,32 +131,6 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 					position.add(midPoint);
 					addRouter(position);
 				}
-			}else if (e.getClickCount() == 2) {
-				//draw line
-				if (currentRouterIndex >= 0){	
-					if(state == 'n') {
-						//n : indicated that no line is being dragged
-						startPoint.set(router[indexInList].position);
-						startPoint.add(25, 25);
-						state = 'd';
-					}else if (state == 'd') {
-						//d : indicates that a line is being dragged
-						endPoint.set(router[indexInList].position);
-						endPoint.add(25, 25);
-						state = 'n';
-						addConnection(startPoint, endPoint);
-						repaint();
-					}
-				}
-			}
-		}else if (e.getButton() == 3) {
-			if (indexInList >= 0) {
-				//delete item on right click
-				remove(indexInList);
-			}
-			if (connectionIndexInList > -1) {
-				//delete item on right click
-				removeConnection(connectionIndexInList);
 			}
 		}
 		repaint();
@@ -169,19 +143,8 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 		Point position = new Point(x, y);
 		
 		if (currentRouterIndex >= 0) {
-	    	if (position_state == 's') {
-	    		offsetPoint.x = router[RouterIndexInList].position.x - x;
-	    		offsetPoint.y = router[RouterIndexInList].position.y - y;
-	    		tempPoint.set(position);
-	    		tempPoint.add(offsetPoint);
-	    		position_state = 'm';
-	    	}
-	    	if (state == 'n') {
-				router[indexInList].setPosition(tempPoint);
-				tempPoint.set(position);
-				tempPoint.add(offsetPoint);
-				//repaint();
-			}
+    		offsetPoint.x = router[RouterIndexInList].position.x - x;
+    		offsetPoint.y = router[RouterIndexInList].position.y - y;
 		}
 	}
 
@@ -193,15 +156,9 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 		Graphics2D g = (Graphics2D) getGraphics();
 		if(mode == "connect") {
     		setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-    		if(currentLine != null) {
-	    		if(currentLine.router1 != null && currentLine.router2 == null) {
-	    	        g.setStroke(new BasicStroke(6));
-	    	        repaint();
-	    	        g.drawLine(currentLine.router1.position.x + 25, currentLine.router1.position.y + 25, x, y);
-	    		}else if(currentLine.router1 != null && currentLine.router2 != null) {
-	    			currentLine = null;
-	    		}
-			}
+	        g.setStroke(new BasicStroke(5));
+	        repaint();
+	        g.drawLine(currentLine.router1.position.x + 25, currentLine.router1.position.y + 25, x, y);
 		}
 	}
 

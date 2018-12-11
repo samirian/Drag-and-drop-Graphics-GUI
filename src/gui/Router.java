@@ -1,7 +1,9 @@
 package gui;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -93,9 +95,8 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		connectionNum++;
 	}
 	
-
 	public void repaintConnection(Line line) {
-
+		line.setPosition();
 		line.repaint();
 		//line.router1.repaint();
 		//line.router2.repaint();
@@ -117,6 +118,8 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
     				repaintConnection(line);
     				addConnection(line);
         			line.router1.addConnection(line);
+        			drawPad.currentLine = null;
+        			drawPad.mode = "none";
     			}
     		}
     	}
@@ -161,9 +164,6 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	    	rp.add(-offset.x, -offset.y);
 	    	setPosition(rp);
 	    	routingTable.setVisible(false);
-			for(int i = 0 ; i <connectionNum ;i++) {
-				repaintConnection(connection[i]);
-			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -173,6 +173,15 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
+		if(drawPad.mode == "connect") {
+			Graphics g = drawPad.getGraphics();
+		    ((Graphics2D) g).setStroke(new BasicStroke(5));
+	        repaint();
+	        drawPad.repaint();
+	        Line currentLine = drawPad.currentLine; 
+	        g.drawLine(currentLine.router1.position.x + 25, currentLine.router1.position.y + 25, drawPad.getMousePosition().x, drawPad.getMousePosition().y);
+		
+		}
 		if(routerImageRectangle.isInRectangleArea(new Point(e.getX(),e.getY()))) {
 	    	//System.out.println("---------current router index--------");
 	    	//System.out.println(drawPad.currentRouterIndex);

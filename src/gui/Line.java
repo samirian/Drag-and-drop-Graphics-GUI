@@ -35,7 +35,8 @@ public class Line extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		setPosition();
+		super.paintComponent(g);
+		//setPosition();
 		((Graphics2D) g).setStroke(new BasicStroke(5));
 		g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 	}

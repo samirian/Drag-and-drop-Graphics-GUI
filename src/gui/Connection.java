@@ -32,36 +32,34 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 	public Connection(Router router1, Router router2, DrawPad drawPad) {
 		this.router1 = router1;
 		this.router2 = router2;
-		this.drawPad = drawPad;
-		this.drawPad.add(this);
-		setLayout(null);
-		setOpaque(false);
-		setBackground(Color.YELLOW);
+		init(drawPad);
+		
 	}
 	
 	public Connection(DrawPad drawPad) {
+		init(drawPad);
+	}
+	
+	private void init(DrawPad drawPad) {
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		this.drawPad = drawPad;
 		this.drawPad.add(this);
 		setOpaque(false);
+
+		setLayout(null);
 		weightLabel.setBackground(Color.YELLOW);
 		weightLabel.setOpaque(true);
 		Helpers.wrapContent(weightLabel);
 		weightLabel.addMouseListener(new MouseListener() {
-			
 			@Override
 			public void mouseReleased(MouseEvent e) {}
-			
 			@Override
 			public void mousePressed(MouseEvent e) {}
-			
 			@Override
 			public void mouseExited(MouseEvent e) {}
-			
 			@Override
 			public void mouseEntered(MouseEvent e) {}
-			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				weightLabel.setVisible(false);
@@ -74,39 +72,18 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 		textField.setOpaque(true);
 		textField.setVisible(false);
         textField.setBorder(null);
+        
 		Helpers.wrapContent(textField, 10, 10);
-		textField.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
 		textField.addKeyListener(new KeyListener() {
-			
 			@Override
 			public void keyTyped(KeyEvent e) {
 				//e.getKeyChar();
 			}
-			
 			@Override
 			public void keyReleased(KeyEvent e) {}
-			
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER){
-					System.out.println("Pressed");
 					textField.setVisible(false);
 					Helpers.wrapContent(textField, 10, 10);
 					weightLabel.setVisible(true);
@@ -117,11 +94,9 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 		add(weightLabel);
 		add(textField);
 	}
-	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//setPosition();
 		weightLabel.setLocation(delta_x/2 , delta_y/2);
 		textField.setLocation(delta_x/2 , delta_y/2);
 		((Graphics2D) g).setStroke(new BasicStroke(5));
@@ -140,31 +115,27 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 				delta_x = delta_x*-1;
 				startPoint.set(0, 0);
 				endPoint.set(delta_x, delta_y);
-				setBounds(router2.position.x+25, router2.position.y+25, delta_x+50, delta_y+50);
-				System.out.println("-------------------lower right-----------------");
+				setLocation(router2.position.x+25, router2.position.y+25);
 			}else {
 				//the first point is in the upper right corner
 				delta_x = delta_x*-1;
 				startPoint.set(0, delta_y);
 				endPoint.set(delta_x, 0);
-				setBounds(router2.position.x+25, router1.position.y+25, delta_x+50, delta_y+50);
-				System.out.println("-------------------upper right-----------------");
+				setLocation(router2.position.x+25, router1.position.y+25);
 			}
 		}else if(delta_x >0){
 			//the first point is in the upper or lower left corner
 			if(delta_y < 0 ) {
-				System.out.println("-------------------lower left-----------------");
 				//the first point is in the lower left corner
 				delta_y = delta_y*-1;
 				startPoint.set(0, delta_y);
 				endPoint.set(delta_x, 0);
-				setBounds(router1.position.x+25, router2.position.y+25, delta_x+50, delta_y+50);
+				setLocation(router1.position.x+25, router2.position.y+25);
 			}else {
 				//the first point is in the upper left corner
-				System.out.println("-------------------upper left-----------------");
 				startPoint.set(0, 0);
 				endPoint.set(delta_x, delta_y);
-				setBounds(router1.position.x+25, router1.position.y+25, delta_x+50, delta_y+50);
+				setLocation(router1.position.x+25, router1.position.y+25);
 			}
 		}
 		if(delta_x == 0) {
@@ -174,9 +145,9 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 			if (delta_y < 0) {
 				//first point is in the lower middle
 				delta_y = delta_y*-1;
-				setBounds(router2.position.x, router2.position.y, delta_x+50, delta_y+50);
+				setLocation(router2.position.x, router2.position.y);
 			}else {
-				setBounds(router1.position.x, router1.position.y, delta_x+50, delta_y+50);
+				setLocation(router1.position.x, router1.position.y);
 				
 			}
 			endPoint.set(25, delta_y);
@@ -188,14 +159,15 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 			if (delta_x < 0) {
 				//first point is in the lower middle
 				delta_x = delta_x*-1;
-				setBounds(router2.position.x, router2.position.y, delta_x+50, delta_y+50);
+				setLocation(router2.position.x, router2.position.y);
 			}else {
-				setBounds(router1.position.x, router1.position.y, delta_x+50, delta_y+50);
+				setLocation(router1.position.x, router1.position.y);
 				
 			}
 			endPoint.set(delta_x, 25);
 		}
-		
+		setSize(delta_x+50, delta_y+50);
+		repaint();
 	}
 	
 	public void setWeight(int w) {
@@ -206,7 +178,6 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 	public int getWeight() {
 		return weight;
 	}
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (drawPad.mode == "delete") {
@@ -217,22 +188,16 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 			drawPad.mode = "none";
 		}
 	}
-
 	@Override
 	public void mousePressed(MouseEvent e) {}
-
 	@Override
 	public void mouseReleased(MouseEvent e) {}
-
 	@Override
 	public void mouseEntered(MouseEvent e) {}
-
 	@Override
 	public void mouseExited(MouseEvent e) {}
-
 	@Override
 	public void mouseDragged(MouseEvent e) {}
-
 	@Override
 	public void mouseMoved(MouseEvent e) {}
 }	

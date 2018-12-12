@@ -22,9 +22,6 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 	private int numOfRouters = 0;
 	private Point startPoint = new Point(0, 0);
 	private Point endPoint = new Point(0, 0);
-	private Point tempPoint = new Point(0, 0);
-    private int routerImageWidth = 50;
-    private int routerImageHeight = 50;
     private int numOfLines = 0;
     public Connection currentLine = null;
 	
@@ -45,19 +42,6 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 			g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 		}
 	}
-	
-    public int getRouterIndexInList(Point position) {
-    	Point p = new Point(routerImageWidth, routerImageHeight);
-    	for (int i = 0; i < numOfRouters; i++) {
-    		tempPoint = router[i].position;
-    		p.set(routerImageWidth, routerImageHeight);
-    		p.add(tempPoint);
-    		if (position.isGreaterThan(tempPoint) && position.isSmallerThan(p)) {
-    			return i;
-    		}
-    	}
-    	return -1;
-    }
 
     public int getRouterIndexInList(int index) {
     	for (int i = 0; i < numOfRouters; i++) {
@@ -81,18 +65,23 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 	    	line[numOfLines - 1] = null;
 	    	numOfLines--;
     	}
-    	repaint();
     }
 
+    public void removeRouter(int indexInList) {
+    	for (int i = indexInList ; i < numOfRouters ;i++) {
+    		router[i] = router[i+1];
+    	}
+    	router[numOfRouters - 1] = null;
+    	numOfRouters--;
+    }
+    
     public void Remove(int index) {
-    	int n = getRouterIndexInList(index);
-    	Router r = router[n];
-    	
-    	if (n < 0 || n >= numOfRouters) {
+    	int indexInList = getRouterIndexInList(index);
+    	Router r = router[indexInList];
+    	if (indexInList < 0 || indexInList >= numOfRouters) {
     		return;
     	}
     	Connection[] delet_connection = r.getConnectionsArray();
-    	System.out.println(r.getConnectionsCount());
     	for(int i = 0 ; i < r.getConnectionsCount() ; i ++) {
     		for(int k = 0 ; k <numOfLines ;k++) {
     			if(delet_connection[i] == line[k]) {
@@ -101,11 +90,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     		}
     	}
     	//delete the router
-    	for (int i = n ; i < numOfRouters ;i++) {
-    		router[i] = router[i+1];
-    	}
-    	router[numOfRouters - 1] = null;
-    	numOfRouters--;
+    	removeRouter(indexInList);
     	repaint();
     }
 

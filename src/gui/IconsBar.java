@@ -64,15 +64,12 @@ public class IconsBar extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null,
-                        "Click on empty space to create new node\n" +
-                        "Drag from node to node to create an edge\n" +
-                        "Click on edges to set the weight\n\n" +
-                        "Combinations:\n" +
-                        "Shift + Left Click       :    Set node as source\n" +
-                        "Shift + Right Click     :    Set node as destination\n" +
-                        "Ctrl  + Drag               :    Reposition Node\n" +
-                        "Ctrl  + Click                :    Get Path of Node\n" +
-                        "Ctrl  + Shift + Click   :    Delete Node/Edge\n");
+                        "-Click on any empty space inside the drawPad to create new router.\n" +
+                        "-Click on connect button to connect any two routers.\n" +
+                        "-Click on the weight of any connection to change its value.\n" +
+                        "-Click on the delete button to delete any router or connection." +
+                        "-Click on run button to run the simulation."
+                );
             }
         });
 

@@ -17,7 +17,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 	private static final int MAX = 100;
 	private Router[] router = new Router[MAX];
 	private static final long serialVersionUID = 1L;
-	private Line line[] = new Line[MAX];
+	private Connection line[] = new Connection[MAX];
 	private int indexer = 0;
 	private int numOfRouters = 0;
 	private Point startPoint = new Point(0, 0);
@@ -26,7 +26,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     private int routerImageWidth = 50;
     private int routerImageHeight = 50;
     private int numOfLines = 0;
-    public Line currentLine = null;
+    public Connection currentLine = null;
 	
 	public DrawPad() {
 		super();
@@ -67,7 +67,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     	return -1;
     }
     
-    public void addConnection(Line l) {
+    public void addConnection(Connection l) {
 		line[numOfLines] = l;
 		numOfLines++;
     }
@@ -91,7 +91,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     	if (n < 0 || n >= numOfRouters) {
     		return;
     	}
-    	Line[] delet_connection = r.getConnectionsArray();
+    	Connection[] delet_connection = r.getConnectionsArray();
     	System.out.println(r.getConnectionsCount());
     	for(int i = 0 ; i < r.getConnectionsCount() ; i ++) {
     		for(int k = 0 ; k <numOfLines ;k++) {

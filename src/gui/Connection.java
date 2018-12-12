@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Line extends JPanel implements MouseMotionListener, MouseListener {
+public class Connection extends JPanel implements MouseMotionListener, MouseListener {
 	/**
 	 * 
 	 */
@@ -29,7 +29,7 @@ public class Line extends JPanel implements MouseMotionListener, MouseListener {
 	private JLabel weightLabel = new JLabel("1000", JLabel.CENTER);
 	private int weight = 1;
 	
-	public Line(Router router1, Router router2, DrawPad drawPad) {
+	public Connection(Router router1, Router router2, DrawPad drawPad) {
 		this.router1 = router1;
 		this.router2 = router2;
 		this.drawPad = drawPad;
@@ -39,7 +39,7 @@ public class Line extends JPanel implements MouseMotionListener, MouseListener {
 		setBackground(Color.YELLOW);
 	}
 	
-	public Line(DrawPad drawPad) {
+	public Connection(DrawPad drawPad) {
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		this.drawPad = drawPad;

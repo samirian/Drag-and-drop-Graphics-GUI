@@ -23,8 +23,8 @@ public class MainWindow extends JPanel{
         super.setLayout(new BorderLayout());
         setGraphPanel();
         setOpaque(false);
-		r = new Router(new gui.Point(50,50), 0, drawPad);
-		r2 = new Router(new gui.Point(200,200), 1, drawPad);
+		//r = new Router(new gui.Point(50,50), 0, drawPad);
+		//r2 = new Router(new gui.Point(200,200), 1, drawPad);
     }
 
     public void showOff() {
@@ -43,7 +43,6 @@ public class MainWindow extends JPanel{
         add(scroll, BorderLayout.CENTER);
         setTopPanel();
         IconsBar iconBar = new IconsBar(this, drawPad);
-
         add(iconBar,BorderLayout.SOUTH);
         
     }

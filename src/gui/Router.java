@@ -17,7 +17,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	 * 
 	 */
 	private boolean f = false;
-	private Line[] connection = new Line[100];
+	private Connection[] connection = new Connection[100];
 	private static final long serialVersionUID = 1L;
 	private Point offset = new Point(0,0);
 	private RoutingTable routingTable;
@@ -88,12 +88,12 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		repaint();
 	}
 
-	public void addConnection(Line line) {
+	public void addConnection(Connection line) {
 		connection[connectionNum] = line;
 		connectionNum++;
 	}
 	
-	public void removeConnection(Line line) {
+	public void removeConnection(Connection line) {
 		for (int i = 0 ; i < connectionNum; i++) {
 			if(connection[i] == line) {
 				for(int k = i ; k < connectionNum - 1 ; k++) {
@@ -105,7 +105,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		}
 	}
 	
-	public void repaintConnection(Line line) {
+	public void repaintConnection(Connection line) {
 		line.setPosition();
 		line.repaint();
 	}
@@ -114,10 +114,10 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	public void mouseClicked(MouseEvent event) {
     	if(event.getButton() == 1) {
     		//left click
-    		Line line = drawPad.currentLine;
+    		Connection line = drawPad.currentLine;
     		if(drawPad.mode == "connect") {
     			if(line == null) {
-    				line = new Line(drawPad);
+    				line = new Connection(drawPad);
 	    			line.router1 = this;
 	    			drawPad.currentLine = line;
     			}else {
@@ -209,7 +209,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		return routingTable;
 	}
 	
-	public Line[] getConnectionsArray() {
+	public Connection[] getConnectionsArray() {
 		return connection;
 	}
 	

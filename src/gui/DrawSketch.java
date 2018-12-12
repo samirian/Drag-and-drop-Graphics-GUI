@@ -1,48 +1,26 @@
 package gui;
-import java.awt.BasicStroke;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class DrawSketch extends JPanel implements MouseMotionListener, MouseListener {
+public class DrawSketch extends JPanel {
 	
 	/**
 	 * 
 	 */
-
-	private RoutingTable rt = new RoutingTable();
-	private int connectionIndexInList = -1;
 	private static final long serialVersionUID = 1L;
-	private Point offsetPoint = new Point(0, 0);
 	private static final int MAX = 100;
 	private int indexInList = 0;
 	private Line line[] = new Line[MAX];
-	private int indexer = 0;
 	private Router[] router = new Router[MAX];
 	public char state = 'n';
 	private int numOfRouters = 0;
-	private int currentRouterIndex = -1;
-	private Point startPoint = new Point(0, 0);
-	private Point endPoint = new Point(0, 0);
-	private char position_state = 's';
 	private Point tempPoint = new Point(0, 0);
     private static JFrame jFrame = null;
     private int routerImageWidth = 50;
     private int routerImageHeight = 50;
     private int numOfLines = 0;
-	private BufferedImage delete_image = null;
 
 	public static void main(String[] args) {
 		jFrame = new JFrame();
@@ -72,36 +50,7 @@ public class DrawSketch extends JPanel implements MouseMotionListener, MouseList
 		m.move();
 	}
 
-	public DrawSketch() {
-		addMouseListener(this);
-		addMouseMotionListener(this);
-
-		try {
-			delete_image = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/router_symbol.png"));
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		this.add(rt);
-	}
 	
-	@Override
-	public void paintComponent(Graphics g) {
-    	super.paintComponent(g);
-    	for (int i = 0; i < numOfRouters; i++) {
-    		router[i].draw(g);
-    	}
-    	for (int i = 0 ; i < numOfLines ; i++) {
-    		line[i].draw(g);
-    	}
-    	if(state =='d') {
-	    	((Graphics2D) g).setStroke(new BasicStroke(3));
-	    	
-			g.drawLine(startPoint.x, startPoint.y, tempPoint.x, tempPoint.y);
-    	}
-
-		g.drawImage (delete_image.getScaledInstance(routerImageWidth, routerImageHeight, Image.SCALE_SMOOTH), 0, 0, this);
-    }
-    
     public int getRouterIndexInList(Point position) {
     	Point p = new Point(routerImageWidth, routerImageHeight);
     	for (int i = 0; i < numOfRouters; i++) {
@@ -119,14 +68,14 @@ public class DrawSketch extends JPanel implements MouseMotionListener, MouseList
 		//rt.addRow(this);
     	if (numOfRouters < MAX) {
     		//router[numOfRouters] = new Router(position, indexer, this);
-    		indexer++;
+    		//indexer++;
     		numOfRouters++;
     		repaint();
     	}
     }
 
     public void addConnection(Point startPoint, Point endPoint) {
-		line[numOfLines] = new Line(router[getRouterIndexInList(startPoint)], router[getRouterIndexInList(endPoint)]);
+		//line[numOfLines] = new Line(router[getRouterIndexInList(startPoint)], router[getRouterIndexInList(endPoint)]);
 		numOfLines++;
     }
      
@@ -193,21 +142,21 @@ public class DrawSketch extends JPanel implements MouseMotionListener, MouseList
     		Point end = new Point(line[i].router2.position);
     		end.add(25, 25);
     		if(equation(start, end, p)) {
-    			connectionIndexInList = i;
+    			//connectionIndexInList = i;
     			return i;
     		}
     	}
-    	connectionIndexInList = -1;
+    	//connectionIndexInList = -1;
     	return -1;
     }
     
     public int routerTrace(Point p) {
 		indexInList = getRouterIndexInList(p);
 		if(indexInList >=0) {
-			currentRouterIndex = router[indexInList].index;
+			//currentRouterIndex = router[indexInList].index;
 			return indexInList;
 		}
-		currentRouterIndex = -1;
+		//currentRouterIndex = -1;
     	return -1;
     }
     
@@ -215,105 +164,5 @@ public class DrawSketch extends JPanel implements MouseMotionListener, MouseList
     	return -1;
     }
     
-    @Override
-    public void mouseMoved(MouseEvent event) {
-    	int x = event.getX();
-    	int y = event.getY();
-    	Point position = new Point(x, y);
-    	//free area, icon, router, or connection
-    	if(routerTrace(position) >= 0 ) {
-    		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    	}else if(lineTrace(position)>=0) {
-    		setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-    	}else {
-    		setCursor(Cursor.getDefaultCursor());
-    	}
-    	
-    	if(state == 'd') {
-			tempPoint = position;
-			repaint();
-		}
-    }
 
-    @Override
-    public void mouseDragged(MouseEvent event) {
-    	int x = event.getX();
-    	int y = event.getY();
-    	Point position = new Point(x, y);
-		if (currentRouterIndex >= 0) {
-	    	if (position_state == 's') {
-	    		offsetPoint.x = router[indexInList].position.x - x;
-	    		offsetPoint.y = router[indexInList].position.y - y;
-	    		tempPoint.set(position);
-	    		tempPoint.add(offsetPoint);
-	    		position_state = 'm';
-	    	}
-	    	if (state == 'n') {
-				router[indexInList].setPosition(tempPoint);
-				tempPoint.set(position);
-				tempPoint.add(offsetPoint);
-				repaint();
-			}
-		}
-	}
-    
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		Point position = new Point(x, y);
-		if (e.getButton() == 1) {
-			if (e.getClickCount() == 1) {
-				//adding new router
-				if (currentRouterIndex < 0) { 
-					//no router exists in this area
-					Point midPoint = new Point(-25, -25);
-					position.add(midPoint);
-					addRouter(position);
-				}
-			}else if (e.getClickCount() == 2) {
-				//draw line
-				if (currentRouterIndex >= 0){	
-					if(state == 'n') {
-						//n : indicated that no line is being dragged
-						startPoint.set(router[indexInList].position);
-						startPoint.add(25, 25);
-						state = 'd';
-					}else if (state == 'd') {
-						//d : indicates that a line is being dragged
-						endPoint.set(router[indexInList].position);
-						endPoint.add(25, 25);
-						state = 'n';
-						addConnection(startPoint, endPoint);
-						repaint();
-					}
-				}
-			}
-		}else if (e.getButton() == 3) {
-			if (indexInList >= 0) {
-				//delete item on right click
-				remove(indexInList);
-			}
-			if (connectionIndexInList > -1) {
-				//delete item on right click
-				removeConnection(connectionIndexInList);
-			}
-		}
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
 }

@@ -26,7 +26,8 @@ public class Line extends JPanel{
 	private int delta_x;
 	private int delta_y;
 	private JTextField textField = new JTextField();
-	private JLabel weightLabel = new JLabel("1", JLabel.CENTER);
+	private JLabel weightLabel = new JLabel("1000", JLabel.CENTER);
+	private int weight = 1;
 	
 	public Line(Router router1, Router router2, DrawPad drawPad) {
 		this.router1 = router1;
@@ -66,9 +67,10 @@ public class Line extends JPanel{
 			}
 		});
 		textField.setBackground(Color.YELLOW);
-		textField.setSize(50, 10);
+		textField.setSize(50,10);
 		textField.setOpaque(true);
 		textField.setVisible(false);
+		textField.setPreferredSize(new Dimension(d.width,d.height));
 		textField.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -98,7 +100,14 @@ public class Line extends JPanel{
 			public void keyReleased(KeyEvent e) {}
 			
 			@Override
-			public void keyPressed(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER){
+					System.out.println("Pressed");
+					textField.setVisible(false);
+					weightLabel.setVisible(true);
+					setWeight(Integer.valueOf(textField.getText()));
+				}
+			}
 		});
 		add(weightLabel);
 		add(textField);
@@ -182,5 +191,14 @@ public class Line extends JPanel{
 			endPoint.set(delta_x, 25);
 		}
 		
+	}
+	
+	public void setWeight(int w) {
+		weight = w;
+		weightLabel.setText(String.valueOf(w));
+	}
+	
+	public int getWeight() {
+		return weight;
 	}
 }	

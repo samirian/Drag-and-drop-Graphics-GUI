@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -65,9 +67,20 @@ public class MainWindow extends JPanel{
     }
 
     private void setButtons(){
+    	BufferedImage delet_image;
 
         JButton connect = new JButton();
-        setupIcon(connect, "run");
+    	try {
+			delet_image = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/resources/delet_symbol.png"));
+			
+            ImageIcon imageIcon = new ImageIcon(delet_image.getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+            connect.setIcon(imageIcon);
+            connect.setBorderPainted(false);
+            connect.setFocusPainted(false);
+            connect.setContentAreaFilled(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         JButton run = new JButton();
         setupIcon(run, "run");
         JButton stop = new JButton();

@@ -20,13 +20,13 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	private Line[] connection = new Line[100];
 	private static final long serialVersionUID = 1L;
 	private Point offset = new Point(0,0);
-	public RoutingTable routingTable;
+	private RoutingTable routingTable;
 	private int routerImageWidth = 50;
 	private int routerImageHeight = 50;
 	public Point position = new Point(0,0);
 	public Point cursorPosition = new Point(0,0); 
 	public int index;
-	public JLabel label;
+	private JLabel label;
 	private JLabel positionLabel;
 	private DrawPad drawPad;
 	private BufferedImage router_image;
@@ -115,7 +115,6 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
     	if(event.getButton() == 1) {
     		//left click
     		Line line = drawPad.currentLine;
-    		System.out.println("line");
     		if(drawPad.mode == "connect") {
     			if(line == null) {
     				line = new Line(drawPad);
@@ -127,6 +126,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
     				repaintConnection(line);
     				addConnection(line);
         			line.router1.addConnection(line);
+        			drawPad.addConnection(line);
         			drawPad.currentLine = null;
         			drawPad.mode = "none";
         			System.out.println("---------------a new connection established--------------");
@@ -136,19 +136,15 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
         		drawPad.mode = "none";
     		}
     	}
-		//label.setText("<html>This is<br>a multi-line string");
 	}
-
 	@Override
 	public void mousePressed(MouseEvent event) {
     	int x = event.getX();
     	int y = event.getY();
     	offset.set(x, y);
 	}
-
 	@Override
 	public void mouseReleased(MouseEvent e) {}
-	
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		setBounds(position.x, position.y, 150,500);
@@ -157,7 +153,6 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		positionLabel.setVisible(true);
 		f = true;
 	}
-
 	@Override
 	public void mouseExited(MouseEvent e) {
 		setBounds(position.x, position.y, 50,70);
@@ -166,7 +161,6 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		routingTable.setVisible(false);
 		f = false;
 	}
-	
 	@Override
 	public void mouseDragged(MouseEvent event) {
 		try {
@@ -183,7 +177,6 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 
 		positionLabel.setText("(" + String.valueOf(position.x) + ", " + String.valueOf(position.y) + ")");
 	}
-
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
@@ -209,7 +202,18 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	public void remove() {
 		drawPad.remove(this);
 		drawPad.Remove(index);
-		drawPad.repaint();
 		drawPad.currentRouterIndex = -1;
+	}
+	
+	public RoutingTable getRoutingTable() {
+		return routingTable;
+	}
+	
+	public Line[] getConnectionsArray() {
+		return connection;
+	}
+	
+	public int getConnectionsCount() {
+		return connectionNum;
 	}
 }

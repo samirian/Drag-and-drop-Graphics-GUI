@@ -1,9 +1,17 @@
 package gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Line extends JPanel{
 	/**
@@ -17,13 +25,15 @@ public class Line extends JPanel{
 	public DrawPad drawPad;
 	private int delta_x;
 	private int delta_y;
+	private JTextField textField = new JTextField();
+	private JLabel weightLabel = new JLabel("1", JLabel.CENTER);
 	
 	public Line(Router router1, Router router2, DrawPad drawPad) {
 		this.router1 = router1;
 		this.router2 = router2;
 		this.drawPad = drawPad;
 		this.drawPad.add(this);
-		//setOpaque(false);
+		setOpaque(false);
 		setBackground(Color.YELLOW);
 	}
 	
@@ -31,12 +41,75 @@ public class Line extends JPanel{
 		this.drawPad = drawPad;
 		this.drawPad.add(this);
 		setOpaque(false);
+		weightLabel.setBackground(Color.YELLOW);
+		weightLabel.setOpaque(true);
+		Dimension d = weightLabel.getPreferredSize();
+		weightLabel.setPreferredSize(new Dimension(d.width,d.height));//<-----------
+		weightLabel.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				weightLabel.setVisible(false);
+				textField.setVisible(true);
+			}
+		});
+		textField.setBackground(Color.YELLOW);
+		textField.setSize(50, 10);
+		textField.setOpaque(true);
+		textField.setVisible(false);
+		textField.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+		textField.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				//e.getKeyChar();
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {}
+		});
+		add(weightLabel);
+		add(textField);
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		//setPosition();
+		weightLabel.setLocation(delta_x/2 , delta_y/2);
+		textField.setLocation(delta_x/2 , delta_y/2);
 		((Graphics2D) g).setStroke(new BasicStroke(5));
 		g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 	}

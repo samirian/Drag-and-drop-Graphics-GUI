@@ -70,6 +70,7 @@ public class MainWindow extends JPanel{
     	BufferedImage delet_image;
 
         JButton connect = new JButton();
+        JButton delete = new JButton();
     	try {
 			delet_image = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/resources/delet_symbol.png"));
 			
@@ -78,6 +79,10 @@ public class MainWindow extends JPanel{
             connect.setBorderPainted(false);
             connect.setFocusPainted(false);
             connect.setContentAreaFilled(false);
+            delete.setIcon(imageIcon);
+            delete.setBorderPainted(false);
+            delete.setFocusPainted(false);
+            delete.setContentAreaFilled(false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,14 +99,25 @@ public class MainWindow extends JPanel{
         buttonPanel.add(run);
         buttonPanel.add(info);
         buttonPanel.add(connect);
+        buttonPanel.add(delete);
 
         connect.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				drawPad.mode = "connect";
+				System.out.println("connect");
 			}
 		});
+        
+        delete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				drawPad.mode = "delete";
+			}
+		});
+
         stop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

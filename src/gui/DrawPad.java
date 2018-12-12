@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 public class DrawPad extends JPanel implements MouseMotionListener, MouseListener {
 	public Point position = null;
 	public String mode = "none";
+	public int currentLineIndex = -1;
 	private int RouterIndexInList = 0;
 	public int currentRouterIndex = -1;
 	private static final int MAX = 100;
@@ -127,10 +128,10 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 		int x = e.getX();
 		int y = e.getY();
 		Point position = new Point(x, y);
-		if (e.getButton() == 1) {
-			System.out.println("left click");
-			System.out.println("--------------router index-------------");
-			System.out.println(currentRouterIndex);
+		if(currentRouterIndex == -1 && currentLineIndex == -1) {
+			mode = "add";
+		}
+		if (e.getButton() == 1 && mode == "add") {
 			if (e.getClickCount() == 1) {
 				//adding new router
 				if (currentRouterIndex < 0) { 
@@ -165,7 +166,8 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 		if(mode == "connect") {
     		setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     		repaint();
-	     }
+    		System.out.println("line");
+		}
 	}
 
 	@Override

@@ -1,19 +1,19 @@
 package gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Line extends JPanel{
+public class Line extends JPanel implements MouseMotionListener, MouseListener {
 	/**
 	 * 
 	 */
@@ -34,18 +34,20 @@ public class Line extends JPanel{
 		this.router2 = router2;
 		this.drawPad = drawPad;
 		this.drawPad.add(this);
+		setLayout(null);
 		setOpaque(false);
 		setBackground(Color.YELLOW);
 	}
 	
 	public Line(DrawPad drawPad) {
+		addMouseListener(this);
+		addMouseMotionListener(this);
 		this.drawPad = drawPad;
 		this.drawPad.add(this);
 		setOpaque(false);
 		weightLabel.setBackground(Color.YELLOW);
 		weightLabel.setOpaque(true);
-		Dimension d = weightLabel.getPreferredSize();
-		weightLabel.setPreferredSize(new Dimension(d.width,d.height));//<-----------
+		Helpers.wrapContent(weightLabel);
 		weightLabel.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -66,11 +68,13 @@ public class Line extends JPanel{
 				textField.setVisible(true);
 			}
 		});
-		textField.setBackground(Color.YELLOW);
+		textField.setBackground(Color.WHITE);
+		textField.setText("1000");
 		textField.setSize(50,10);
 		textField.setOpaque(true);
 		textField.setVisible(false);
-		textField.setPreferredSize(new Dimension(d.width,d.height));
+        textField.setBorder(null);
+		Helpers.wrapContent(textField, 10, 10);
 		textField.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -104,6 +108,7 @@ public class Line extends JPanel{
 				if(e.getKeyCode() == KeyEvent.VK_ENTER){
 					System.out.println("Pressed");
 					textField.setVisible(false);
+					Helpers.wrapContent(textField, 10, 10);
 					weightLabel.setVisible(true);
 					setWeight(Integer.valueOf(textField.getText()));
 				}
@@ -201,4 +206,33 @@ public class Line extends JPanel{
 	public int getWeight() {
 		return weight;
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (drawPad.mode == "delete") {
+			drawPad.remove(this);
+			drawPad.repaint();
+			router1.removeConnection(this);
+			router2.removeConnection(this);
+			drawPad.mode = "none";
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {}
 }	

@@ -44,7 +44,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		positionLabel = new JLabel();
 		
 		try {
-			router_image = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/resources/router_symbol.png"));
+			router_image = ImageIO.read(new File("src/resources/router_symbol.png"));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

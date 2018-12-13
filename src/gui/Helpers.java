@@ -25,7 +25,7 @@ public class Helpers {
 	public static void setIcon(JButton c, String img, int width, int height) {
 
         try {
-            Image icon = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/resources/" + img + ".png"));           
+            Image icon = ImageIO.read(new File("src/resources/" + img + ".png"));           
             ImageIcon imageIcon = new ImageIcon(icon.getScaledInstance(width, height, Image.SCALE_SMOOTH));
             c.setIcon(imageIcon);
             c.setBorderPainted(false);
@@ -38,7 +38,7 @@ public class Helpers {
 	
 	public static void setIcon(JButton c, String img){
         try {
-            Image icon = ImageIO.read(new File("/home/samir/eclipse-workspace/Routing/src/resources/" + img + ".png"));
+            Image icon = ImageIO.read(new File("src/resources/" + img + ".png"));
             ImageIcon imageIcon = new ImageIcon(icon);
             c.setIcon(imageIcon);
             c.setBorderPainted(false);

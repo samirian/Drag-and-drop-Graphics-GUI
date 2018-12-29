@@ -32,6 +32,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	private BufferedImage router_image;
 	public Rectangle routerImageRectangle;
 	private int connectionNum = 0;
+	public String mylabel; 
 	
 	public Router(Point position, int index, DrawPad drawPad) {
 		addMouseListener(this);
@@ -53,6 +54,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		String s = "(" + String.valueOf(position.x) + ", " + String.valueOf(position.y) + ")";
 		positionLabel.setText(s);
 		Helpers.wrapContent(positionLabel);
+		mylabel=label.getText();
 		
 		routingTable = new RoutingTable(this);
 		routingTable.setVisible(false);

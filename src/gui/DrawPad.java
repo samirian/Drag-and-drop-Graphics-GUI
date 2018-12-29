@@ -49,7 +49,7 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     			return i;
     	}
     	return -1;
-    }
+    } 
     
     public void addConnection(Connection l) {
 		line[numOfLines] = l;
@@ -136,5 +136,13 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
+	
+	public Router[] getRouterArray() {
+		return router;
+	}
+	
+	public int getRoutersCount() {
+		return numOfRouters;
+	}
 
 }

@@ -48,7 +48,7 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 		setOpaque(false);
 
 		setLayout(null);
-		weightLabel.setBackground(Color.YELLOW);
+		weightLabel.setBackground(Color.white);
 		weightLabel.setOpaque(true);
 		Helpers.wrapContent(weightLabel);
 		weightLabel.addMouseListener(new MouseListener() {
@@ -66,7 +66,7 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 				textField.setVisible(true);
 			}
 		});
-		textField.setBackground(Color.WHITE);
+		textField.setBackground(Color.gray);
 		textField.setText("1000");
 		textField.setSize(50,10);
 		textField.setOpaque(true);

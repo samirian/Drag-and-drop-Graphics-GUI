@@ -1,4 +1,5 @@
 package gui;
+import algorithm.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -73,6 +74,14 @@ public class IconsBar extends JPanel{
             }
         });
 
-        //run.addActionListener();
+        run.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                 Dijkstra myDijkstra =new Dijkstra(drawPad);
+                ;
+            }
+        });
+
+      //  run.addActionListene;
     }
 }

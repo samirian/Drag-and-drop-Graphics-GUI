@@ -3,6 +3,7 @@ import algorithm.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -26,24 +27,29 @@ public class IconsBar extends JPanel{
 		Helpers.setIcon(connect, "connect_symbol", 50, 50);
 		JButton delete = new JButton();
 		Helpers.setIcon(delete, "delete_symbol", 50, 50);
-		JButton run = new JButton();
-		Helpers.setIcon(run, "run");
 		JButton stop = new JButton();
-		Helpers.setIcon(stop, "reset");
+		Helpers.setIcon(stop, "reset", 50, 50);
 		final JButton info = new JButton();
-		Helpers.setIcon(info, "info");
-
+		Helpers.setIcon(info, "info", 50 , 50);
+		final JButton normal = new JButton();
+		Helpers.setIcon(normal, "normal", 50 , 50);
+		JLabel status = new JLabel();
+		status.setText("Normal Mode");
+		
         setBackground(Helpers.parseColor("#DDDDDD"));
         add(stop);
-        add(run);
         add(info);
         add(connect);
         add(delete);
+        add(normal);
+        add(status);
 
         connect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				drawPad.mode = "connect";
+				status.setText("Connect Mode");
+
 			}
 		});
         
@@ -51,6 +57,7 @@ public class IconsBar extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				drawPad.mode = "delete";
+				status.setText("Delete Mode");
 			}
 		});
 
@@ -74,13 +81,14 @@ public class IconsBar extends JPanel{
             }
         });
 
-        run.addActionListener(new ActionListener() {
+        normal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                 Dijkstra myDijkstra =new Dijkstra(drawPad);
-                ;
+                status.setText("Normal Mode");
+                drawPad.mode ="none";
             }
         });
+
 
       //  run.addActionListene;
     }

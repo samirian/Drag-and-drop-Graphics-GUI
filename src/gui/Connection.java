@@ -27,7 +27,7 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 	private int delta_y;
 	private JTextField textField = new JTextField();
 	private JLabel weightLabel = new JLabel("1000", JLabel.CENTER);
-	private int weight = 1;
+	private int weight = 1000;
 	
 	public Connection(Router router1, Router router2, DrawPad drawPad) {
 		this.router1 = router1;
@@ -68,7 +68,7 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 		});
 		textField.setBackground(Color.gray);
 		textField.setText("1000");
-		textField.setSize(50,10);
+		Helpers.wrapContent(textField);
 		textField.setOpaque(true);
 		textField.setVisible(false);
         textField.setBorder(null);
@@ -87,6 +87,7 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 					textField.setVisible(false);
 					Helpers.wrapContent(textField, 10, 10);
 					weightLabel.setVisible(true);
+					System.out.println(textField.getText());
 					setWeight(Integer.valueOf(textField.getText()));
 				}
 			}
@@ -97,10 +98,10 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		weightLabel.setLocation(delta_x/2 , delta_y/2);
-		textField.setLocation(delta_x/2 , delta_y/2);
 		((Graphics2D) g).setStroke(new BasicStroke(5));
 		g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+		weightLabel.setLocation(delta_x/2 , delta_y/2);
+		textField.setLocation(delta_x/2 , delta_y/2);
 	}
 	
 	public void setPosition() {
@@ -185,7 +186,6 @@ public class Connection extends JPanel implements MouseMotionListener, MouseList
 			drawPad.repaint();
 			router1.removeConnection(this);
 			router2.removeConnection(this);
-			drawPad.mode = "none";
 		}
 	}
 	@Override

@@ -8,6 +8,7 @@ public class Dijkstra {
 	DrawPad drawPad;
     ShortestPath myshortest = new ShortestPath() ; 
     int length;
+    routerTable[] tables;
 	public Dijkstra(DrawPad mmm)
 	{ 
 		drawPad= mmm;
@@ -15,7 +16,7 @@ public class Dijkstra {
 		int len = mmm.getRoutersCount();
 		length=len;
 	   
-	    routerTable[] tables= new routerTable[len];
+	    tables = new routerTable[len];
 	    for(int i = 0 ; i < len ;i++)
 	    {	
 	    	tables[i]= new routerTable(len);
@@ -75,6 +76,10 @@ public class Dijkstra {
 			}
 		
 		}
+	}
+	
+	public routerTable getRouterTable(int routerindex) {
+		return tables[routerindex];
 	}
 	
 	public void node(Router mynode,routerTable myRoutertable,Router currentrouter, int currentshortestweight) {

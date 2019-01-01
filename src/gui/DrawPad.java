@@ -10,6 +10,8 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
+import algorithm.routerTable;
+
 public class DrawPad extends JPanel implements MouseMotionListener, MouseListener {
 	public String mode = "none";
 	public int currentLineIndex = -1;
@@ -42,7 +44,46 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 			g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 		}
 	}
-
+	
+	public void highlightPaths(routerTable table) {
+		colorPaths(table,Color.red);
+	}
+	
+	public void removeHighlightPaths() {
+		for(int i =0 ; i < numOfLines; i++)
+			line[i].setForeground(Color.black);
+	}
+	
+	private Router getRouterByLabel(String label) {
+		for(int i = 0; i < numOfRouters; i++)
+			if(router[i].mylabel.equals(label))
+				return router[i];
+		
+		return null; // we should never reach this
+				
+	}
+	
+	private void colorPaths(routerTable table, Color color) {
+		for (int i = 0; i < table.tableOfrouter.length; i++) {
+			for (int j = 0; j < table.tableOfrouter[i].numOfnodes-1; j++) {
+				Router sRouter, eRouter;
+				sRouter = getRouterByLabel(table.tableOfrouter[i].nodes[j]);
+				eRouter = getRouterByLabel(table.tableOfrouter[i].nodes[j+1]);
+				for(int con = 0; con < numOfLines; con++) {
+					// find the line from the path
+					if ((line[con].router1 == sRouter && line[con].router2 == eRouter)
+							||
+							(line[con].router2 == sRouter  && line[con].router1 == eRouter)
+							)
+					{
+						line[con].setForeground(Color.red);
+					}
+				}
+			}
+		}
+	}
+	
+	
     public int getRouterIndexInList(int index) {
     	for (int i = 0; i < numOfRouters; i++) {
     		if(router[i].index == index)

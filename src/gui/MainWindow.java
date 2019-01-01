@@ -45,7 +45,7 @@ public class MainWindow extends JPanel{
         add(scroll, BorderLayout.CENTER);
         setTopPanel();
         IconsBar iconBar = new IconsBar(this, drawPad);
-        add(iconBar,BorderLayout.SOUTH);
+        add(iconBar,BorderLayout.NORTH);
     
         
     }

@@ -37,8 +37,8 @@ public class IconsBar extends JPanel{
 		status.setText("Normal Mode");
 		
         setBackground(Helpers.parseColor("#DDDDDD"));
-        add(stop);
-        add(info);
+        //add(stop);
+        //add(info);
         add(connect);
         add(delete);
         add(normal);

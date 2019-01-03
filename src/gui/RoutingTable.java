@@ -16,7 +16,7 @@ public class RoutingTable extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private int n = 1;
 	private Router router;
-	private int width = 200;
+	private int width = 400;
 	private int height = 10;
 	
 	public RoutingTable(Router router) {
@@ -35,6 +35,9 @@ public class RoutingTable extends JPanel{
 		n = n + 2;
 	}
 	public void populate(routerTable table) {
+		if(table == null)
+			return;
+		
 		for(int i=0 ; i < table.tableOfrouter.length; i++)
 		{
 			String st = "";

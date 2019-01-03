@@ -78,8 +78,12 @@ public class Dijkstra {
 		}
 	}
 	
-	public routerTable getRouterTable(int routerindex) {
-		return tables[routerindex];
+	public routerTable getRouterTable(String label) {
+		for(int i =0; i < tables.length; i++) {
+			if(tables[i].tableOfrouter[0].nodes[0] == label)
+				return tables[i];
+		}
+		return null; // should never reach here
 	}
 	
 	public void node(Router mynode,routerTable myRoutertable,Router currentrouter, int currentshortestweight) {

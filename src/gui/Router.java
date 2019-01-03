@@ -153,9 +153,12 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 	public void mouseReleased(MouseEvent e) {
 	}
 
+	int activeSizeW = 500, activeSizeH = 500;
+	int inactiveSizeW = 50, inactiveSizeH = 70;
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		setSize(150, 500);
+		setSize(activeSizeW, activeSizeH);
 		drawPad.currentRouterIndex = index;
 		Helpers.wrapContent(positionLabel);
 		positionLabel.setVisible(true);
@@ -164,7 +167,7 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		setSize(50, 70);
+		setSize(inactiveSizeW, inactiveSizeH);
 		drawPad.currentRouterIndex = -1;
 		positionLabel.setVisible(false);
 		routingTable.setVisible(false);
@@ -189,8 +192,6 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		positionLabel.setText(s);
 	}
 
-	
-
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX();
@@ -198,26 +199,27 @@ public class Router extends JPanel implements MouseMotionListener, MouseListener
 		if (drawPad.mode == "connect") {
 			drawPad.repaint();
 		}
-		if (drawPad.mode != "none")
-			return;
 
 		if (routerImageRectangle.isInRectangleArea(new Point(e.getX(), e.getY())) && f == true) {
-			routingTable.setVisible(false);
-			remove(routingTable);
-			routingTable = new RoutingTable(this);
-			Dijkstra myDijkstra = new Dijkstra(drawPad);
-			routerTable rt = myDijkstra.getRouterTable(drawPad.currentRouterIndex);
-			routingTable.populate(rt);
-			routingTable.setVisible(true);
-			add(routingTable);
-			drawPad.highlightPaths(rt);
+			setSize(activeSizeW, activeSizeH);
+
+			if (drawPad.mode == "none") {
+				routingTable.setVisible(false);
+				remove(routingTable);
+				routingTable = new RoutingTable(this);
+				Dijkstra myDijkstra = new Dijkstra(drawPad);
+				routerTable rt = myDijkstra.getRouterTable(mylabel);
+				routingTable.populate(rt);
+				routingTable.setVisible(true);
+				add(routingTable);
+				drawPad.highlightPaths(rt);
+			}
 		} else {
 			routingTable.setVisible(false);
 			drawPad.removeHighlightPaths();
+			positionLabel.setVisible(false);
+			setSize(inactiveSizeW, inactiveSizeH);
 		}
-
-		// routingTable.setBounds(e.getX(), e.getY(), routingTable.getWidth(),
-		// routingTable.getHeight());
 		cursorPosition.set(x, y);
 		if (routerImageRectangle.isInRectangleArea(cursorPosition)) {
 			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

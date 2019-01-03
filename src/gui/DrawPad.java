@@ -46,6 +46,8 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
 	}
 	
 	public void highlightPaths(routerTable table) {
+		if(table == null)
+			return;
 		colorPaths(table,Color.red);
 	}
 	
@@ -122,14 +124,20 @@ public class DrawPad extends JPanel implements MouseMotionListener, MouseListene
     	if (indexInList < 0 || indexInList >= numOfRouters) {
     		return;
     	}
-    	Connection[] delet_connection = r.getConnectionsArray();
-    	for(int i = 0 ; i < r.getConnectionsCount() ; i ++) {
-    		for(int k = 0 ; k <numOfLines ;k++) {
-    			if(delet_connection[i] == line[k]) {
-    				removeConnection(k);
-    			}
+    	for(int i = 0; i < numOfLines; i++ )
+    		if(line[i].router1 == r) 
+    		{
+    			line[i].router2.removeConnection(line[i]);
+    			removeConnection(i);
+    			i--; // one connection is removed
     		}
-    	}
+    		else if(line[i].router2 == r)
+    		{
+ 
+    			line[i].router1.removeConnection(line[i]);
+    			removeConnection(i);
+    			i--;
+    		}
     	//delete the router
     	removeRouter(indexInList);
     	repaint();

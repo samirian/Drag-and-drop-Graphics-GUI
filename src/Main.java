@@ -9,7 +9,7 @@ public class Main extends JPanel{
 	
     public static void main(String[] args) {
 		jFrame = new JFrame();
-		jFrame.setTitle("Routing by Samir");
+		jFrame.setTitle("Routing Simulation");
 		jFrame.setSize(1000, 500);
 		jFrame.setVisible(true);
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
